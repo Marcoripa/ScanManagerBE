@@ -1,0 +1,24 @@
+{
+  "name": "scan-managerbe",
+  "version": "1.0.0",
+  "description": "scan manager backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marcoripa/ScanManagerBE.git"
+  },
+  "author": "Marco Ripa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marcoripa/ScanManagerBE/issues"
+  },
+  "homepage": "https://github.com/Marcoripa/ScanManagerBE#readme",
+  "dependencies": {
+    "excel4node": "^1.8.2",
+    "express": "^4.18.2",
+    "xlsx": "^0.18.5"
+  }
+}
