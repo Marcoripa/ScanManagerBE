@@ -1,9 +1,12 @@
 const express = require("express");const xl = require("excel4node");
 const xlsx = require("xlsx");
+const cors = require('cors')
 const app = express();
 const port = 3001;
 
 app.use(express.json());
+
+app.use(cors())
 
 app.get("/read_archive", (req, res) => {
   const file = xlsx.readFile("./filename1.xlsx");
