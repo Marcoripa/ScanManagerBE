@@ -1,14 +1,15 @@
-const express = require("express");const xl = require("excel4node");
+const express = require("express");
+const xl = require("excel4node");
 const xlsx = require("xlsx");
-const cors = require('cors')
+const cors = require("cors");
 const app = express();
 const port = 3001;
 
 app.use(express.json());
 
-app.use(cors())
+app.use(cors());
 
-app.get("/read_archive", (req, res) => {
+/* app.get("/read_archive", (req, res) => {
   const file = xlsx.readFile("./filename1.xlsx");
 
   let data = [];
@@ -24,6 +25,22 @@ app.get("/read_archive", (req, res) => {
 
   // Printing data
   console.log(data);
+}); */
+
+app.get("/read_product", (req, res) => {
+  let id_product = req.query.id_product;
+  console.log("The id: " + id_product);
+  const file = xlsx.readFile("./filename1.xlsx");
+
+  const sheets = file.SheetNames;
+
+  let product_data = xlsx.utils.sheet_to_json(file.Sheets[sheets[0]]);
+
+  searched_product = product_data.find(product => product.Id_Prodotto === id_product)
+  console.log(searched_product)
+  return searched_product
+
+  
 });
 
 app.post("/save_item", (req, res) => {
@@ -31,59 +48,27 @@ app.post("/save_item", (req, res) => {
   const file = xlsx.readFile("./filename1.xlsx");
   let worksheet = file.Sheets["Archive"];
 
-  xlsx.utils.add
+  xlsx.utils.add;
 
-  xlsx.utils.sheet_add_aoa(worksheet, [["Nome", "Quanità", "test", "uno"]], {origin: -1});
+  xlsx.utils.sheet_add_aoa(
+    worksheet,
+    [
+      [
+        /* self_generate_id ,*/ req.body.name,
+        req.body.quantity,
+        req.body.dimension,
+        req.body.description,
+      ],
+    ],
+    { origin: -1 }
+  );
 
-  // write to new file
-  // formatting from OLD file will be lost!
   xlsx.writeFile(file, "./filename1.xlsx");
-  res.send("Ok")
-});
-
-app.post("/save_item_test", (req, res) => {
-  //res.send('ciao');
-
-  /* 
-  const data = [
-    {
-       "name":"Shadab Shaikh",
-       "quantity":"shadab@gmail.com",
-       "dimension":"1234567890"
-       "description":"1234567890"
-    }
-   ]
-*/
-  const data = req.body;
-  console.log(req.body);
-
-  const wb = new xl.Workbook();
-  const ws = wb.addWorksheet("Archive");
-
-  const headingColumnNames = ["Nome", "Quantità", "Dimensione", "Descrizione"];
-
-  let headingColumnIndex = 1;
-  headingColumnNames.forEach(heading => {
-    ws.cell(1, headingColumnIndex++).string(heading);
-  });
-
-  let rowIndex = 2;
-  /* data.forEach( record => {
-        let columnIndex = 1;
-        Object.keys(record).forEach(columnName =>{
-            ws.cell(rowIndex,columnIndex++)
-                .string(record [columnName])
-        });
-        rowIndex++;
-    }); */
-  let columnIndex = 1;
-  Object.keys(data).forEach(columnName => {
-    ws.cell(rowIndex, columnIndex++).string(data[columnName]);
-  });
-
-  wb.write("filename1.xlsx");
+  res.send("Ok");
 });
 
 app.listen(port, () => {
   console.log(`Scan Manager listening at http://localhost:${port}`);
 });
+
+
